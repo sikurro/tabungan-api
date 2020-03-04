@@ -28,6 +28,28 @@ Route::group([
     });
 });
 
+Route::group([
+    'namespace' => 'Api',    
+], function(){
+
+
+    Route::post('/register', 'AuthController@register');
+    Route::post('/login', 'AuthController@login');
+
+    Route::group([
+        'middleware' => 'auth:api'
+    ],function(){
+
+        // Auth
+        Route::get('/info_user', 'AuthController@user');
+        Route::get('/logout', 'AuthController@logout');
+
+    });
+
+});
+
+Route::middleware('auth:api')->get('/get_user', 'Api\AuthController@user');
+
 Route::get('/info', function(){
     return response()->json(array(
         'app_name' => 'tabungan_api',
